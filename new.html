@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria de Amigos</title>
+    <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f0f8ff;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .gallery-item img {
+            transition: transform 0.3s ease;
+            width: 100%;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-item .caption {
+            position: absolute;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <header class="bg-primary text-white text-center py-5">
+        <h1>Galeria de Amigos</h1>
+        <p class="lead">Guarde e compartilhe as melhores memórias!</p>
+    </header>
+
+    <!-- Galeria -->
+    <div class="container my-3">
+        <div class="row">
+            <!-- Item de galeria -->
+            <div class="col-md-4 mb-4">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300" alt="Amigo 1" class="img-fluid">
+                    <div class="caption">Amigo 1</div>
+                </div>
+            </div>
+            <!-- Outro item de galeria -->
+            <div class="col-md-4 mb-4">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300" alt="Amigo 2" class="img-fluid">
+                    <div class="caption">Amigo 2</div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/300" alt="Amigo 3" class="img-fluid">
+                    <div class="caption">Amigo 3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="bg-dark text-white text-center py-4">
+        <p>&copy; 2024 Galeria de Amigos. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="bootstrap-4.6.2-dist/js/jquery.min.js"></script>
+    <script src="bootstrap-4.6.2-dist/js/popper.min.js"></script>
+    <script src="bootstrap-4.6.2-dist/js/bootstrap.min.js"></script>
+</body>
+</html>
