@@ -3,77 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeria de Amigos</title>
-    <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.min.css">
+    <title>Jogo de Tiro Simples</title>
     <style>
         body {
-            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            flex-direction: column;
         }
-        .gallery-item {
+
+        #gameArea {
+            width: 500px;
+            height: 500px;
             position: relative;
+            background-color: #e1e1e1;
+            border: 2px solid #000;
             overflow: hidden;
-            border-radius: 10px;
         }
-        .gallery-item img {
-            transition: transform 0.3s ease;
-            width: 100%;
-        }
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-        .gallery-item .caption {
+
+        #movingImage {
+            width: 70px;
+            height: 70px;
             position: absolute;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            width: 100%;
-            padding: 10px;
-            text-align: center;
+            cursor: pointer;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
             font-weight: bold;
+            color: #333;
+        }
+
+        .shot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        #shootButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #shootButton:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo para o boneco */
+        #character {
+            width: 60px;
+            height: 100px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%; /* Centraliza o boneco horizontalmente */
+            transform: translateX(-50%);
         }
     </style>
 </head>
 <body>
 
-    <!-- Cabeçalho -->
-    <header class="bg-primary text-white text-center py-5">
-        <h1>Galeria de Amigos</h1>
-        <p class="lead">Guarde e compartilhe as melhores memórias!</p>
-    </header>
-
-    <!-- Galeria -->
-    <div class="container my-3">
-        <div class="row">
-            <!-- Item de galeria -->
-            <div class="col-md-4 mb-4">
-                <div class="gallery-item">
-                    <img src="https://via.placeholder.com/300" alt="Amigo 1" class="img-fluid">
-                    <div class="caption">Amigo 1</div>
-                </div>
-            </div>
-            <!-- Outro item de galeria -->
-            <div class="col-md-4 mb-4">
-                <div class="gallery-item">
-                    <img src="https://via.placeholder.com/300" alt="Amigo 2" class="img-fluid">
-                    <div class="caption">Amigo 2</div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="gallery-item">
-                    <img src="https://via.placeholder.com/300" alt="Amigo 3" class="img-fluid">
-                    <div class="caption">Amigo 3</div>
-                </div>
-            </div>
-        </div>
+    <div id="gameArea">
+        <div id="score">acertou o fofinho: 0</div>
+        <img id="movingImage" src="imagens/rdgjogo.jpeg" alt="Imagem do alvo">
+        
+        <!-- Imagem do boneco atirando -->
+        <img id="character" src="imagens/bolsonaroatirando.jpeg" alt="Boneco Atirando">
     </div>
 
-    <!-- Rodapé -->
-    <footer class="bg-dark text-white text-center py-4">
-        <p>&copy; 2024 Galeria de Amigos. Todos os direitos reservados.</p>
-    </footer>
+    <!-- Botão para atirar -->
+    <button id="shootButton">Atirar</button>
 
-    <script src="bootstrap-4.6.2-dist/js/jquery.min.js"></script>
-    <script src="bootstrap-4.6.2-dist/js/popper.min.js"></script>
-    <script src="bootstrap-4.6.2-dist/js/bootstrap.min.js"></script>
+    <script>
+        let score = 0;
+        let speed = 1000; // Tempo inicial em milissegundos (quanto menor, mais rápido)
+
+        const gameArea = document.getElementById("gameArea");
+        const movingImage = document.getElementById("movingImage");
+        const scoreDisplay = document.getElementById("score");
+        const shootButton = document.getElementById("shootButton");
+        const character = document.getElementById("character");
+
+        // Função para mover a imagem do alvo para uma posição aleatória
+        function moveImage() {
+            const maxX = gameArea.offsetWidth - movingImage.offsetWidth;
+            const maxY = gameArea.offsetHeight - movingImage.offsetHeight;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            movingImage.style.left = `${randomX}px`;
+            movingImage.style.top = `${randomY}px`;
+        }
+
+        // Função para disparar o tiro
+        function shoot() {
+            const shot = document.createElement("div");
+            shot.classList.add("shot");
+            gameArea.appendChild(shot);
+
+            // Posição inicial do tiro (onde o clique aconteceu)
+            shot.style.left = `${gameArea.offsetWidth / 2 - shot.offsetWidth / 2}px`; // Tiro começa no centro
+            shot.style.top = `${gameArea.offsetHeight - 40}px`; // Posição abaixo da imagem do boneco
+
+            // Movimento do tiro
+            const shotInterval = setInterval(() => {
+                const shotRect = shot.getBoundingClientRect();
+                const imageRect = movingImage.getBoundingClientRect();
+
+                // Verifica se o tiro acertou o alvo
+                if (
+                    shotRect.left < imageRect.right &&
+                    shotRect.right > imageRect.left &&
+                    shotRect.top < imageRect.bottom &&
+                    shotRect.bottom > imageRect.top
+                ) {
+                    score += 1;
+                    scoreDisplay.textContent = `Pontos: ${score}`;
+                    clearInterval(shotInterval); // Interrompe o movimento do tiro
+                    gameArea.removeChild(shot); // Remove o tiro após acertar
+                    moveImage(); // Mover o alvo após o acerto
+                } else if (shotRect.top < 0) {
+                    clearInterval(shotInterval); // Interrompe o movimento do tiro se sair da tela
+                    gameArea.removeChild(shot); // Remove o tiro após sair da tela
+                }
+
+                // Move o tiro para cima
+                shot.style.top = `${shot.offsetTop - 5}px`; // Ajuste a velocidade do tiro
+            }, 10);
+        }
+
+        // Ação ao clicar no botão de atirar
+        shootButton.addEventListener("click", shoot);
+
+        // Função para iniciar o jogo
+        function startGame() {
+            moveImage();
+            setInterval(moveImage, speed); // Atualiza a posição do alvo a cada intervalo de tempo
+        }
+
+        startGame();
+    </script>
+
 </body>
 </html>
