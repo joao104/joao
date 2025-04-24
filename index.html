@@ -93,25 +93,24 @@
     }
 
     #versiculo {
-  margin-top: 25px;
-  font-size: 1rem;
-  padding: 10px;
-  z-index: 1;
-  opacity: 0; /* Começa invisível */
-  animation: fadeIn 1s ease-in-out forwards;
-}
+      margin-top: 25px;
+      font-size: 1rem;
+      padding: 10px;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 1s ease-in-out forwards;
+    }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px); /* Começa com um pequeno deslocamento */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* Volta para a posição original */
-  }
-}
-
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     .music-button {
       margin-top: 20px;
@@ -127,6 +126,15 @@
 
     .music-button:hover {
       background: #666;
+    }
+
+    /* Tornar o iframe responsivo */
+    #musicFrame {
+      width: 100%;
+      height: auto;
+      max-width: 560px;  /* Limita o tamanho máximo */
+      margin: 20px auto;
+      display: block;
     }
   </style>
 </head>
@@ -151,7 +159,9 @@
   <button class="music-button" onclick="playMusic()">🎵 Ouvir 'music'</button>
 
   <!-- Iframe escondido com música do YouTube -->
-<iframe id="musicFrame" width="560" height="315" style="border: none; display: block; margin: 20px auto;" src="https://www.youtube.com/embed/30VagMEospM?autoplay=0&controls=1&loop=1&playlist=30VagMEospM&start=2" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe id="musicFrame" style="border: none; opacity: 0; display: block; position: absolute; left: -9999px;" 
+          src="https://www.youtube.com/embed/30VagMEospM?autoplay=0&controls=1&loop=1&playlist=30VagMEospM&start=2" 
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
   <script>
     // Estrelas animadas
@@ -175,27 +185,22 @@
     ];
 
     function mostrarVersiculo() {
-  const versiculoElement = document.getElementById("versiculo");
+      const versiculoElement = document.getElementById("versiculo");
+      versiculoElement.style.animation = 'none';
+      versiculoElement.offsetHeight; // Trigger reflow
+      versiculoElement.style.animation = 'fadeIn 1s ease-in-out forwards';
 
-  // Reinicia a animação removendo a classe e depois re-adicionando
-  versiculoElement.style.animation = 'none';
-  // Força uma revalidação da animação
-  versiculoElement.offsetHeight; // Trigger reflow
-  versiculoElement.style.animation = 'fadeIn 1s ease-in-out forwards';
-
-  const aleatorio = versiculos[Math.floor(Math.random() * versiculos.length)];
-  versiculoElement.innerText = aleatorio;
-}
+      const aleatorio = versiculos[Math.floor(Math.random() * versiculos.length)];
+      versiculoElement.innerText = aleatorio;
+    }
 
     // Música de fundo
-function playMusic() {
-  const iframe = document.getElementById("musicFrame");
-  iframe.style.opacity = 1;  // Torna o iframe visível, se desejado.
-  iframe.style.position = 'static';  // Ajusta a posição do iframe, se necessário.
-  
-  iframe.src = "https://www.youtube.com/embed/30VagMEospM?autoplay=1&loop=1&playlist=30VagMEospM&start=2";
-}
-
+    function playMusic() {
+      const iframe = document.getElementById("musicFrame");
+      iframe.style.opacity = 1;  // Torna o iframe visível
+      iframe.style.position = 'static';  // Coloca o iframe na posição normal
+      iframe.src = "https://www.youtube.com/embed/30VagMEospM?autoplay=1&controls=1&loop=1&playlist=30VagMEospM&start=2";
+    }
   </script>
 
 </body>
