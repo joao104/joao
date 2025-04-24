@@ -1,168 +1,206 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogo de Tiro Simples</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: red;
-            flex-direction: column;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Você é luz ✨</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        #gameArea {
-            width: 80vw;
-            height: 70vh;
-            position: relative;
-            background-color: blue;
-            border: 2px solid #000;
-            overflow: hidden;
-            border-radius: 10px; /* Bordas arredondadas */
-        }
+    body {
+      background: radial-gradient(#000020, #000);
+      color: white;
+      font-family: 'Courier New', monospace;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      overflow: hidden;
+      padding: 20px;
+    }
 
-        #movingImage {
-            width: 15vw;
-            height: 15vw;
-            position: absolute;
-            cursor: pointer;
-        }
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
 
-        #score {
-            position: absolute;
-            top: 5%;
-            left: 5%;
-            font-size: 4vw;
-            font-weight: bold;
-            color: #fff;
-        }
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite;
+    }
 
-        .shot {
-            width: 4vw;
-            height: 4vw;
-            background-color: red;
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-        }
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
 
-        #shootButton {
-            margin-top: 30vh;
-            padding: 25px 25px;
-            font-size: 4vw;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
+    h1 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      z-index: 1;
+    }
 
-        #shootButton:hover {
-            background-color: #0056b3;
-        }
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      z-index: 1;
+    }
 
-        /* Estilo para o boneco */
-        #character {
-            width: 9vw;
-            height: 9vh;
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
+    .star-button {
+      background-color: gold;
+      color: #333;
+      padding: 18px;
+      border: none;
+      clip-path: polygon(
+        50% 0%,
+        61% 35%,
+        98% 35%,
+        68% 57%,
+        79% 91%,
+        50% 70%,
+        21% 91%,
+        32% 57%,
+        2% 35%,
+        39% 35%
+      );
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.3s, background-color 0.3s;
+      width: 80px;
+      height: 80px;
+    }
 
-    </style>
+    .star-button:hover {
+      transform: scale(1.1);
+      background-color: #ffd700;
+    }
+
+    #versiculo {
+  margin-top: 25px;
+  font-size: 1rem;
+  padding: 10px;
+  z-index: 1;
+  opacity: 0; /* Começa invisível */
+  animation: fadeIn 1s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px); /* Começa com um pequeno deslocamento */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Volta para a posição original */
+  }
+}
+
+
+    .music-button {
+      margin-top: 20px;
+      background: #444;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      z-index: 1;
+    }
+
+    .music-button:hover {
+      background: #666;
+    }
+  </style>
 </head>
 <body>
 
-    <div id="gameArea">
-        <div id="score">acertou o fofinho: 0</div>
-        <img id="movingImage" src="imagens/rdgjogo.jpeg" alt="Imagem do alvo">
-        
-        <!-- Imagem do boneco atirando -->
-        <img id="character" src="imagens/bolsonaroatirando.jpeg" alt="Boneco Atirando">
-    </div>
+  <!-- Estrelas de fundo -->
+  <div class="stars" id="stars"></div>
 
-    <!-- Botão para atirar -->
-    <button id="shootButton">Atirar</button>
+  <h1>Escolha uma estrela, e receba uma palavra só pra você ✨</h1>
 
-    <script>
-        let score = 0;
-        let speed = 1000; // Tempo inicial em milissegundos (quanto menor, mais rápido)
+  <div class="buttons">
+    <button class="star-button" onclick="mostrarVersiculo()">🌟</button>
+    <button class="star-button" onclick="mostrarVersiculo()">⭐</button>
+    <button class="star-button" onclick="mostrarVersiculo()">🌠</button>
+    <button class="star-button" onclick="mostrarVersiculo()">⭐</button>
+    <button class="star-button" onclick="mostrarVersiculo()">🌠</button>
+  </div>
 
-        const gameArea = document.getElementById("gameArea");
-        const movingImage = document.getElementById("movingImage");
-        const scoreDisplay = document.getElementById("score");
-        const shootButton = document.getElementById("shootButton");
-        const character = document.getElementById("character");
+  <div id="versiculo"></div>
 
-        // Função para mover a imagem do alvo para uma posição aleatória
-        function moveImage() {
-            const maxX = gameArea.offsetWidth - movingImage.offsetWidth;
-            const maxY = gameArea.offsetHeight - movingImage.offsetHeight;
+  <!-- Botão para tocar música -->
+  <button class="music-button" onclick="playMusic()">🎵 Ouvir 'music'</button>
 
-            const randomX = Math.floor(Math.random() * maxX);
-            const randomY = Math.floor(Math.random() * maxY);
+  <!-- Iframe escondido com música do YouTube -->
+  <iframe id="musicFrame"
+          width="1"
+          height="1"
+          style="opacity:0; position:absolute; left:-9999px;"
+          src=""
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen>
+  </iframe>
 
-            movingImage.style.left = `${randomX}px`;
-            movingImage.style.top = `${randomY}px`;
-        }
+  <script>
+    // Estrelas animadas
+    const starsContainer = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = Math.random() * 100 + "%";
+      star.style.left = Math.random() * 100 + "%";
+      star.style.animationDuration = (Math.random() * 3 + 1) + "s";
+      starsContainer.appendChild(star);
+    }
 
-        // Função para disparar o tiro
-        function shoot() {
-            const shot = document.createElement("div");
-            shot.classList.add("shot");
-            gameArea.appendChild(shot);
+    // Versículos
+    const versiculos = [
+      "“Muitas mulheres são exemplares, mas você a todas supera.” – Provérbios 31:29",
+      "“Você é toda linda, minha querida; em você não há defeito algum.” – Cânticos 4:7",
+      "“Deus está no meio dela; não será abalada.” – Salmo 46:5",
+      "“Com amor eterno eu te amei; por isso, com benignidade te atraí.” – Jeremias 31:3",
+      "“Agora, pois, permanecem a fé, a esperança e o amor. O maior destes, porém, é o amor.” – 1 Coríntios 13:13"
+    ];
 
-            // Posição inicial do tiro (onde o clique aconteceu)
-            shot.style.left = `${gameArea.offsetWidth / 2 - shot.offsetWidth / 2}px`; // Tiro começa no centro
-            shot.style.top = `${gameArea.offsetHeight - 40}px`; // Posição abaixo da imagem do boneco
+    function mostrarVersiculo() {
+  const versiculoElement = document.getElementById("versiculo");
 
-            // Movimento do tiro
-            const shotInterval = setInterval(() => {
-                const shotRect = shot.getBoundingClientRect();
-                const imageRect = movingImage.getBoundingClientRect();
+  // Reinicia a animação removendo a classe e depois re-adicionando
+  versiculoElement.style.animation = 'none';
+  // Força uma revalidação da animação
+  versiculoElement.offsetHeight; // Trigger reflow
+  versiculoElement.style.animation = 'fadeIn 1s ease-in-out forwards';
 
-                // Verifica se o tiro acertou o alvo
-                if (
-                    shotRect.left < imageRect.right &&
-                    shotRect.right > imageRect.left &&
-                    shotRect.top < imageRect.bottom &&
-                    shotRect.bottom > imageRect.top
-                ) {
-                    score += 1;
-                    scoreDisplay.textContent = `Pontos: ${score}`;
-                    clearInterval(shotInterval); // Interrompe o movimento do tiro
-                    gameArea.removeChild(shot); // Remove o tiro após acertar
-                    moveImage(); // Mover o alvo após o acerto
-                } else if (shotRect.top < 0) {
-                    clearInterval(shotInterval); // Interrompe o movimento do tiro se sair da tela
-                    gameArea.removeChild(shot); // Remove o tiro após sair da tela
-                }
+  const aleatorio = versiculos[Math.floor(Math.random() * versiculos.length)];
+  versiculoElement.innerText = aleatorio;
+}
 
-                // Move o tiro para cima
-                shot.style.top = `${shot.offsetTop - 5}px`; // Ajuste a velocidade do tiro
-            }, 10);
-        }
-
-        // Ação ao clicar no botão de atirar
-        shootButton.addEventListener("click", shoot);
-
-        // Função para iniciar o jogo
-        function startGame() {
-            moveImage();
-            setInterval(moveImage, speed); // Atualiza a posição do alvo a cada intervalo de tempo
-        }
-
-        startGame();
-    </script>
+    // Música de fundo
+    function playMusic() {
+      const iframe = document.getElementById("musicFrame");
+      iframe.src = "https://www.youtube.com/embed/30VagMEospM?autoplay=1&loop=1&playlist=30VagMEospM&start=2";
+    }
+  </script>
 
 </body>
 </html>
