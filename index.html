@@ -151,15 +151,7 @@
   <button class="music-button" onclick="playMusic()">🎵 Ouvir 'music'</button>
 
   <!-- Iframe escondido com música do YouTube -->
-  <iframe id="musicFrame"
-          width="1"
-          height="1"
-          style="opacity:0; position:absolute; left:-9999px;"
-          src=""
-          frameborder="0"
-          allow="autoplay; encrypted-media"
-          allowfullscreen>
-  </iframe>
+<iframe id="musicFrame" width="560" height="315" style="border: none; display: block; margin: 20px auto;" src="https://www.youtube.com/embed/30VagMEospM?autoplay=0&controls=1&loop=1&playlist=30VagMEospM&start=2" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
   <script>
     // Estrelas animadas
@@ -194,9 +186,6 @@
   const aleatorio = versiculos[Math.floor(Math.random() * versiculos.length)];
   versiculoElement.innerText = aleatorio;
 }
-
-    <iframe id="musicFrame" width="560" height="315" style="border: none; display: block; margin: 20px auto;" src="https://www.youtube.com/embed/30VagMEospM?autoplay=0&controls=1&loop=1&playlist=30VagMEospM&start=2" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
 
     // Música de fundo
 function playMusic() {
