@@ -196,10 +196,14 @@
 }
 
     // Música de fundo
-    function playMusic() {
-      const iframe = document.getElementById("musicFrame");
-      iframe.src = "https://www.youtube.com/embed/30VagMEospM?autoplay=1&loop=1&playlist=30VagMEospM&start=2";
-    }
+function playMusic() {
+  const iframe = document.getElementById("musicFrame");
+  iframe.style.opacity = 1;  // Torna o iframe visível, se desejado.
+  iframe.style.position = 'static';  // Ajusta a posição do iframe, se necessário.
+  
+  iframe.src = "https://www.youtube.com/embed/30VagMEospM?autoplay=1&loop=1&playlist=30VagMEospM&start=2";
+}
+
   </script>
 
 </body>
